@@ -39,12 +39,12 @@ D:\model\Tool_Source_fac\SONY\pro_test_230209\pro_test\obj\Debug\pro_test.Form2.
 D:\model\Tool_Source_fac\SONY\pro_test_230209\pro_test\obj\Debug\pro_test.Properties.Resources.resources
 D:\model\Tool_Source_fac\SONY\pro_test_230209\pro_test\obj\Debug\pro_test.csproj.GenerateResource.Cache
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\bin\Debug\pro_test.exe.config
-D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.exe
-D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.pdb
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\bin\Debug\pro_test.exe
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\bin\Debug\pro_test.pdb
-D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csprojResolveAssemblyReference.cache
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.Form1.resources
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.Form2.resources
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.Properties.Resources.resources
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csproj.GenerateResource.Cache
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.exe
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.pdb
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csprojResolveAssemblyReference.cache

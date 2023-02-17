@@ -16,6 +16,7 @@ using System.Threading;
 using System.IO;
 using System.IO.Ports;
 
+
 namespace pro_test
 {
     public partial class Form1 : Form
@@ -38,6 +39,8 @@ namespace pro_test
         static public string gBdLapEnd;
 
         static public string dutFullBdAddress;
+        static public string generatebdstr;
+        static public string generatedumibdstr;
 
         static public string gBdLapWriteNext;
 
@@ -351,11 +354,11 @@ namespace pro_test
                 public string hdu_fd_r = "hdu fd r";
                 public string fd_check = "fd hello";
                 public string main_bd_check = "fd ble_binprop get own_identity_address";
-                public string sub_bd_check = "fd ble_binprop get own_identity_address";
-                public string main_bd_write = "fd ble_binprop set own_identity_address";
-                public string sub_bd_write = "fd ble_binprop set lr_set_identity_address";
+                public string dumi_bd_check = "fd ble_binprop get own_identity_address";
+                public string main_bd_write = "fd ble_binprop set own_identity_address ";
+                public string dumi_bd_write = "fd ble_binprop set lr_set_identity_address ";
                 public string main_bd_type_write = "fd ble_binprop set own_identity_address_type 1";
-                public string sub_bd_type_write = "fd ble_binprop set lr_set_identity_address_type 1";
+                public string dumi_bd_type_write = "fd ble_binprop set lr_set_identity_address_type 1";
                 public string auto_poweroff_disable = "fd app ecomode disable";
                 public string vbus_disable = "fd app appstate PowerOffState";
                 public string set_power_on = "fd app appstate CaseOutState";
@@ -427,7 +430,11 @@ namespace pro_test
                 public string yusen_set_cradle_green_off = "yusen.exe set cradleled off green";
                 public string yusen_set_cradle_blue_on = "yusen.exe set cradleled on blue";
                 public string yusen_set_cradle_blue_off = "yusen.exe set cradleled off blue";
-      
+
+                // ETC Command
+                public string generate_guid = "powershell -Command \"[guid]::NewGuid()\"";
+
+
             }
             CommandData command_data = new CommandData();
 
@@ -503,6 +510,11 @@ namespace pro_test
                 bool retVal = false;
 
                 if (seqName == "TEST_CONNECT") { retVal = procTestOpenPort(index); }
+                else if (seqName == "GENERATE_GUID") { retVal = procTestGenerateGuid(index); }
+                else if (seqName == "WRITE_BD_ADDRESS") { retVal = procTestWriteMainBDAddress(index); }
+                else if (seqName == "WRITE_BD_ADDRESS_DUMI") { retVal = procTestWriteDumiBDAddress(index); }
+                else if (seqName == "MAIN_BD_ADDRESS_TYPE") { retVal = procTestMainBDAddressType(index); }
+                else if (seqName == "DUMI_BD_ADDRESS_TYPE") { retVal = procTestDumiBDAddressType(index); }                
                 else if (seqName == "TEST_CONNECT_YUSEN") { retVal = procTestOpenYusen(index); }
                 else if (seqName == "MAIN_FD_L") { retVal = procTestMainFDL(index); }
                 else if (seqName == "MAIN_FD_R") { retVal = procTestMainFDR(index); }
@@ -522,6 +534,206 @@ namespace pro_test
                 else if (seqName == "SET_CRADLE_TESTMODE") { retVal = procTestLRPairing(index); }
 
                 return retVal;
+            }
+            public bool procTestGenerateGuid(int index)
+            {                
+                int flag_ng = 0;
+
+                ProcessStartInfo cmd = new ProcessStartInfo();
+                Process process = new Process();
+
+                cmd.FileName = "cmd.exe";
+
+                cmd.CreateNoWindow = true;
+                cmd.UseShellExecute = false;
+
+                cmd.RedirectStandardInput = true;
+                cmd.RedirectStandardOutput = true;
+                cmd.RedirectStandardError = true;
+
+                process.StartInfo = cmd;
+                process.Start();
+
+                process.StandardInput.Write(command_data.generate_guid + Environment.NewLine);
+                process.StandardInput.Close();
+                string result = process.StandardOutput.ReadToEnd();
+
+                process.WaitForExit();
+                process.Close();
+
+                int ind = result.IndexOf("----");
+                string str = result.Substring(ind + 62, 12);
+                char[] str_array = new char[12];
+                char[] str_array_bd = new char[12];
+                char[] str_array_bd_dumi = new char[] { '0', '1', '1', '1', '1', '1', 'a', 'a', 'a', 'a', 'a', 'a' };
+
+                str_array = str.ToCharArray();
+
+                try
+                {
+                    for(int i=0; i<str_array.Length;i++)
+                    {
+                        if(i==0)
+                        {
+                            if (str_array[i] == '0' || str_array[i] == '4' || str_array[i] == '8' || str_array[i] == 'c')
+                            {
+                                str_array_bd[i] = 'c';
+                                str_array_bd_dumi[i] = 'c';
+                            }                                
+                            else if (str_array[i] == '1' || str_array[i] == '5' || str_array[i] == '9' || str_array[i] == 'd')
+                            {
+                                str_array_bd[i] = 'd';
+                                str_array_bd_dumi[i] = 'd';
+                            }
+                                
+                            else if (str_array[i] == '2' || str_array[i] == '6' || str_array[i] == 'a' || str_array[i] == 'e')
+                            {
+                                str_array_bd[i] = 'e';
+                                str_array_bd_dumi[i] = 'e';
+                            }                                
+                            else
+                            {
+                                str_array_bd[i] = 'f';
+                                str_array_bd_dumi[i] = 'f';
+                            }
+                        }
+                        else
+                        {
+                            str_array_bd[i] = str_array[i];
+                        }
+                    }
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    StringBuilder stringBuilder1 = new StringBuilder();
+
+                    for (int i = 0; i < str_array_bd.Length; i++)
+                    {
+                        stringBuilder.Append(str_array_bd[i]);                        
+                    }
+                    generatebdstr = stringBuilder.ToString();
+
+                    for(int i=0; i<str_array_bd_dumi.Length;i++)
+                    {
+                        stringBuilder1.Append(str_array_bd_dumi[i]);
+                    }
+                    generatedumibdstr = stringBuilder1.ToString();
+
+                    //string str_result = string.Concat(str_array_bd);
+
+                    mainForm.tbResult.Invoke(new MethodInvoker(delegate { mainForm.tbResult.Text = str + "\r\n" + generatebdstr; }));
+                    mainForm.tbResult.Invoke(new MethodInvoker(delegate { mainForm.tbResult.Text = str + "\r\n" + generatedumibdstr; }));
+
+                }
+                finally
+                {
+                    mainForm.gtestValue[index] = generatebdstr;
+                    if ( str_array_bd[0] == '\0')
+                    {
+                        flag_ng = 1;
+                    }
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Generate Guid Fail";
+                    return false;
+                }
+                else
+                    return true;                                
+            }
+
+            public bool procTestWriteMainBDAddress(int index)
+            {                
+                int flag_ng = 0;
+
+                try
+                {
+                    mainForm.SendMessage(command_data.main_bd_write + "0x"+generatebdstr);
+                }
+                finally
+                {
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Main BD Address Write Fail";
+                    return false;
+                }
+                else
+                    return true;
+                
+            }
+            public bool procTestWriteDumiBDAddress(int index)
+            {
+                int flag_ng = 0;
+
+                try
+                {
+                    mainForm.SendMessage(command_data.dumi_bd_write + "0x" + generatedumibdstr);
+                }
+                finally
+                {
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Dumi BD Address Write Fail";
+                    return false;
+                }
+                else
+                    return true;
+                
+            }
+            public bool procTestMainBDAddressType(int index)
+            {
+                int flag_ng = 0;
+
+                try
+                {
+                    mainForm.SendMessage(command_data.main_bd_type_write);
+                }
+                finally
+                {
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Main BD Address Type Write Fail";
+                    return false;
+                }
+                else
+                    return true;
+            }
+            public bool procTestDumiBDAddressType(int index)
+            {
+                int flag_ng = 0;
+
+                try
+                {
+                    mainForm.SendMessage(command_data.dumi_bd_type_write);
+                }
+                finally
+                {
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Dumi BD Address Type Write Fail";
+                    return false;
+                }
+                else
+                    return true;
             }
             public bool procTestOpenYusen(int index)
             {
@@ -611,12 +823,14 @@ namespace pro_test
                 if (mainForm._Port.IsOpen == true)
                 {
                     Console.WriteLine("[yspark]port is open");
+                    mainForm.gtestValue[index] = mainForm._Port.PortName;
                     return true;
                 }
                 else
                 {
                     flag_ng = 1;
                     Console.WriteLine("[yspark]port is closed");
+                    mainForm.gtestValue[index] = "Not Connected";
                     return false;
                 }
             }
@@ -1625,7 +1839,7 @@ namespace pro_test
                 }
                 else if (gtestSequence[j] == "WRITE_BD_ADDRESS")
                 {
-                    string[] rowInfo = { j.ToString(), gtestSequence[j], gBdNap + gBdUap + gBdLapWriteNext, "-", "-" };
+                    string[] rowInfo = { j.ToString(), gtestSequence[j], "-", "-", "-" };
                     dataGridView1.Rows.Add(rowInfo);
                 }
                 else
@@ -1819,7 +2033,7 @@ namespace pro_test
                 {
                     _Port = new SerialPort();
                     //_Port.PortName = "COM243";
-                    _Port.PortName = "COM56";
+                    _Port.PortName = "COM1";
                     _Port.BaudRate = 115200;
                     _Port.DataBits = 8;
                     _Port.Parity = Parity.None;
@@ -1969,7 +2183,7 @@ namespace pro_test
         {
             //String msg = _Port.ReadExisting();
             Delay(700);
-            if (msg.Contains("0x"))
+            if (msg.Contains("get own_identity_address\r\n0x"))
             {
                 int index = msg.IndexOf("0x");
                 //Console.WriteLine(msg.Substring(index + 2, 12));
@@ -2000,6 +2214,47 @@ namespace pro_test
                 /*int index = msg.IndexOf("success");
                 Console.WriteLine(msg.Substring(index, 7));
                 tbResult.Text = msg.Substring(index, 7);*/
+            }
+            else if (msg.Contains("fd ble_binprop set own_identity_address_type"))
+            {                
+                int index = msg.IndexOf("success");
+                Console.WriteLine(msg.Substring(index, 7));
+                gtestValue[num] = msg.Substring(index, 7);                
+                return true;
+            }
+            else if(msg.Contains("fd ble_binprop set own_identity_address"))
+            {                
+                int index = msg.IndexOf("0x");
+
+                string bddata = msg.Substring(index + 2, 12);
+
+                if (bddata == generatebdstr)
+                {
+                    gtestValue[num] = bddata;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (msg.Contains("lr_set_identity_address_type"))
+            {
+                int index = msg.IndexOf("success");
+                Console.WriteLine(msg.Substring(index, 7));
+                gtestValue[num] = msg.Substring(index, 7);
+                return true;
+            }
+            else if(msg.Contains("lr_set_identity_address"))
+            {
+                int index = msg.IndexOf("0x");
+
+                string dumibddata = msg.Substring(index + 2, 12);
+                if (dumibddata == generatedumibdstr)
+                {
+                    gtestValue[num] = dumibddata;
+                    return true;
+                }
+                else
+                    return false;
             }
             else if (msg.Contains("Temperature"))
             {
@@ -2059,7 +2314,7 @@ namespace pro_test
                 return true;
             }
             else if (msg.Contains("success"))
-            {
+            {            
                 int index = msg.IndexOf("success");
                 Console.WriteLine(msg.Substring(index, 7));
                 gtestValue[num] = msg.Substring(index, 7);
@@ -2198,6 +2453,34 @@ namespace pro_test
         private void btnSend2_Click(object sender, EventArgs e)
         {
             SendMessage(tbData.Text);
+        }
+
+        private void btngenguid_Click(object sender, EventArgs e)
+        {
+            int flag_ng = 0;
+            ProcessStartInfo cmd = new ProcessStartInfo();
+            Process process = new Process();
+
+            cmd.FileName = "cmd.exe";
+
+            cmd.CreateNoWindow = false;
+            cmd.UseShellExecute = false;
+
+            cmd.RedirectStandardInput = true;
+            cmd.RedirectStandardOutput = true;
+            cmd.RedirectStandardError = true;
+
+            process.StartInfo = cmd;
+            process.Start();
+
+            process.StandardInput.Write("powershell -Command \"[guid]::NewGuid()\"" + Environment.NewLine);
+            process.StandardInput.Close();
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            process.Close();
+
+            tbResult.Text += result;
+            MessageBox.Show(result);
         }
     }
 }

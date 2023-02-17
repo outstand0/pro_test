@@ -72,6 +72,7 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.btnSend2 = new System.Windows.Forms.Button();
             this.cbComport = new System.Windows.Forms.ComboBox();
+            this.btngenguid = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -486,11 +487,22 @@
             this.cbComport.Size = new System.Drawing.Size(74, 20);
             this.cbComport.TabIndex = 40;
             // 
+            // btngenguid
+            // 
+            this.btngenguid.Location = new System.Drawing.Point(1252, 247);
+            this.btngenguid.Name = "btngenguid";
+            this.btngenguid.Size = new System.Drawing.Size(84, 23);
+            this.btngenguid.TabIndex = 41;
+            this.btngenguid.Text = "gen guid";
+            this.btngenguid.UseVisualStyleBackColor = true;
+            this.btngenguid.Click += new System.EventHandler(this.btngenguid_Click);
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1339, 736);
+            this.Controls.Add(this.btngenguid);
             this.Controls.Add(this.cbComport);
             this.Controls.Add(this.btnSend2);
             this.Controls.Add(this.btnClear);
@@ -587,6 +599,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnSend2;
         private System.Windows.Forms.ComboBox cbComport;
+        private System.Windows.Forms.Button btngenguid;
     }
 }
 
