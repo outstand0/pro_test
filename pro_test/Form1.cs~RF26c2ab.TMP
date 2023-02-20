@@ -157,7 +157,8 @@ namespace pro_test
             initDataGridView();
             initDataGridView2();
 
-            loadConfig();            
+            loadConfig();
+            Combobox_Data_Add();
 
             checkLogFile();
             checkDupeLogFile();
@@ -205,7 +206,7 @@ namespace pro_test
             sound1.Play();
         }
 
-      /*  private void Combobox_Data_Add()
+        private void Combobox_Data_Add()
         {
             cbTestSelect.Items.Add("BD_CHECKER");
             cbTestSelect.Items.Add("BDA");
@@ -223,7 +224,7 @@ namespace pro_test
             cbTestSelect.Items.Add("Thermistor");
             cbTestSelect.Items.Add("Touch");
             cbTestSelect.Items.Add("Uplink");
-        }*/
+        }
 
 #region log_relative
 
@@ -367,7 +368,7 @@ namespace pro_test
                 public string carrier_transmission_off = "fd ble_rftx stop";
                 public string capid_write_updown = "fd pm xosctrim 612850";
                 public string rfanalog_nvwrite = "fd rfanalog 612850";
-                public string appmode_init = "fd prop set common initapp system_server";
+                public string appmode_booting = "fd prop set common initapp system_server";
                 public string connection_port_set = "fd prop set unique console1 2";
                 public string connection_port_set_return = "fd prop set unique console 1";
                 public string dtm_mode_on = "fd ble_dtm start";
@@ -386,8 +387,6 @@ namespace pro_test
                 public string factory_flag_9 = "fd app tracelog write 9 1";
                 public string factory_flag_10 = "fd prop set unique ***** 10 1";
                 public string factory_flag_11 = "fd prop set unique ***** 11 1";
-                public string set_prop = "setprop -f";
-                public string reboot = "reboot";
 
                 // AT Command
                 public string AT_SDKVer = "AT+EVERINFO=0";
@@ -524,7 +523,7 @@ namespace pro_test
                 else if (seqName == "ANALOG_NV_WRITE") { retVal = procTestNvWrite(index); }
                 else if (seqName == "APPMODE_INIT") { retVal = procTestAppmodeInit(index); }
                 else if (seqName == "SET_PROP") { retVal = procTestSetProp(index); }
-                else if (seqName == "REBOOT") { retVal = procTestReboot(index); }
+                else if (seqName == "REBOOT" { retVal = procTestReboot(index); }
                 
                 else if (seqName == "TEST_CONNECT_YUSEN") { retVal = procTestOpenYusen(index); }
                 else if (seqName == "MAIN_FD_L") { retVal = procTestMainFDL(index); }
@@ -955,98 +954,6 @@ namespace pro_test
                 if (flag_ng == 1)
                 {
                     mainForm.gNgType[index] = "Capid Write Updown Fail";
-                    return false;
-                }
-                else
-                    return true;
-            }
-            public bool procTestNvWrite(int index)
-            {
-                int flag_ng = 0;
-                
-                try
-                {
-                    mainForm.SendMessage(command_data.rfanalog_nvwrite);
-                }
-                finally
-                {
-                    if (mainForm.Check_Data(index) == false)
-                    {
-                        flag_ng = 1;
-                    }
-                }
-                if (flag_ng == 1)
-                {
-                    mainForm.gNgType[index] = "Analog NV Write Fail";
-                    return false;
-                }
-                else
-                    return true;
-            }
-            public bool procTestAppmodeInit(int index)
-            {
-                int flag_ng = 0;
-
-                try
-                {
-                    mainForm.SendMessage(command_data.appmode_init);
-                }
-                finally
-                {
-                    if (mainForm.Check_Data(index) == false)
-                    {
-                        flag_ng = 1;
-                    }
-                }
-                if (flag_ng == 1)
-                {
-                    mainForm.gNgType[index] = "Appmode Init Fail";
-                    return false;
-                }
-                else
-                    return true;
-            }
-            public bool procTestSetProp(int index)
-            {
-                int flag_ng = 0;
-
-                try
-                {
-                    mainForm.SendMessage(command_data.set_prop);
-                }
-                finally
-                {
-                    if (mainForm.Check_Data(index) == false)
-                    {
-                        flag_ng = 1;
-                    }
-                }
-                if (flag_ng == 1)
-                {
-                    mainForm.gNgType[index] = "Set Prop Fail";
-                    return false;
-                }
-                else
-                    return true;
-            }
-            public bool procTestReboot(int index)
-            {
-                int flag_ng = 0;
-
-                try
-                {
-                    mainForm.SendMessage(command_data.reboot);
-                }
-                finally
-                {
-                    if (mainForm.Check_Data(index) == false)
-                    {
-                        flag_ng = 1;
-                    }
-                }
-                if (flag_ng == 1)
-                {
-                    mainForm.gNgType[index] = "Reboot Fail";
                     return false;
                 }
                 else
