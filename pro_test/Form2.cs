@@ -23,7 +23,7 @@ namespace pro_test
         private void Form2_Load(object sender, EventArgs e)
         {
             Combobox_Data_Add();
-            //cbbTestSelect.Text = "BDA";             
+            //cbbTestSelect.Text = "BDA";
         }
         private void Combobox_Data_Add()
         {            

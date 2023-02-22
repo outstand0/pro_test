@@ -15,6 +15,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.IO.Ports;
+using FTD2XX_NET;
+using NationalInstruments.Visa;
 
 
 namespace pro_test
@@ -372,7 +374,7 @@ namespace pro_test
                 public string app_mode_out = "fd prop set common initapp cmdif_start";
                 public string carrier_transmission_on = "fd ble_rftx start 0 1 19";
                 public string carrier_transmission_off = "fd ble_rftx stop";
-                public string capid_write_updown = "fd pm xosctrim 612850";
+                public string capid_write_updown = "fd pm xosctrim ";
                 public string rfanalog_nvwrite = "fd rfanalog 612850";
                 public string appmode_init = "fd prop set common initapp system_server";
                 public string connect_port_enable = "fd prop set unique console1 2";
@@ -585,8 +587,8 @@ namespace pro_test
                 process.Close();
 
                 int ind = result.IndexOf("----");
-                string str = result.Substring(ind + 62, 12);
-                char[] str_array = new char[12];
+                string str = result.Substring(ind + 60, 14);
+                char[] str_array = new char[14];
                 char[] str_array_bd = new char[12];
                 char[] str_array_bd_dumi = new char[] { '0', '1', '1', '1', '1', '1', 'a', 'a', 'a', 'a', 'a', 'a' };
 
@@ -594,7 +596,7 @@ namespace pro_test
 
                 try
                 {
-                    for(int i=0; i<str_array.Length;i++)
+                    for(int i=0; i<str_array.Length-2;i++)
                     {
                         if(i==0)
                         {
@@ -622,7 +624,7 @@ namespace pro_test
                         }
                         else
                         {
-                            str_array_bd[i] = str_array[i];
+                            str_array_bd[i] = str_array[i+2];
                         }
                     }
 
@@ -959,18 +961,21 @@ namespace pro_test
             {
                 int flag_ng = 0;
                 
-
-                try
+                for(int i=61; i>0; i--)
                 {
-                    mainForm.SendMessage(command_data.capid_write_updown + "2850");
-                }
-                finally
-                {
-                    if (mainForm.Check_Data(index) == false)
+                    try
                     {
-                        flag_ng = 1;
+                        mainForm.SendMessage(command_data.capid_write_updown + i + "2850");
+                    }
+                    finally
+                    {
+                        if (mainForm.Check_Data(index) == false)
+                        {
+                            flag_ng = 1;
+                        }
                     }
                 }
+               
                 if (flag_ng == 1)
                 {
                     mainForm.gNgType[index] = "Capid Write Updown Fail";
