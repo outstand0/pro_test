@@ -47,6 +47,9 @@ namespace pro_test
         static public string gLineInfoA;
         static public string gLineInfoB;
 
+        static public string gCapiddata;
+        static public string gCarrierdata;
+
         public string comPort;
         public string comPort_num;
 
@@ -155,6 +158,7 @@ namespace pro_test
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             initDataGridView();
             initDataGridView2();
 
@@ -162,6 +166,8 @@ namespace pro_test
 
             checkLogFile();
             checkDupeLogFile();
+
+            
 
             //update count
             tb_totalCount.Text = totalCount.ToString();
@@ -800,12 +806,6 @@ namespace pro_test
             public bool procTestFactoryFlagWrite(int index)
             {
                 int flag_ng = 0;
-                if (mainForm.port_check() == false)
-                {
-                    flag_ng = 0;
-                }
-                else
-                    flag_ng = 1;
                 try
                 {
                     mainForm.SendMessage(command_data.factory_flag);
@@ -827,15 +827,7 @@ namespace pro_test
             }
             public bool procTestSettingSave(int index)
             {
-                int flag_ng = 0;
-
-                if (mainForm.port_check() == false)
-                {
-                    flag_ng = 0;
-                }
-                else
-                    flag_ng = 1;
-
+                int flag_ng = 0;                
                 try
                 {
                     mainForm.SendMessage(command_data.setting_save_reboot);
@@ -966,11 +958,11 @@ namespace pro_test
             public bool procTestCapidWriteUpdown(int index)
             {
                 int flag_ng = 0;
-
+                
 
                 try
                 {
-                    mainForm.SendMessage(command_data.capid_write_updown);
+                    mainForm.SendMessage(command_data.capid_write_updown + "2850");
                 }
                 finally
                 {
@@ -2214,6 +2206,7 @@ namespace pro_test
             tempString = IniReader.IniReadValue("CONFIG", "FACTORY_FLAG", pathConfigFile);
             gFactoryFlag = tempString;
 
+            this.Text = program_name + " " + gAppName;
             lb_AppName.Text = program_name + " " + gAppName;
             lb_AppName.BackColor = Color.LightYellow;
             lb_AppName.ForeColor = Color.Green;
@@ -2467,15 +2460,6 @@ namespace pro_test
                 return _Port;
             }
         }
-        public bool port_check()
-        {
-            if (_Port.IsOpen == false)
-            {
-                return false;
-            }
-            else
-                return true;
-        }
         private void port_open()
         {
             //serialPort1 = new SerialPort();
@@ -2523,6 +2507,15 @@ namespace pro_test
                 }
 
             }
+        }
+        private bool port_check()
+        {
+            if (Port.IsOpen == false)
+            {
+                return false;
+            }
+            else
+                return true;
         }
         // Log control
         private StringBuilder _Strings;
@@ -2617,187 +2610,194 @@ namespace pro_test
         {
             //String msg = _Port.ReadExisting();
             Delay(300);
-            if (msg.Contains("get own_identity_address"))
+
+            if (port_check() == false)
+                return false;
+            else
             {
-                int index = msg.IndexOf("0x");
-                //Console.WriteLine(msg.Substring(index + 2, 12));
 
-                string bddata = msg.Substring(index + 2, 12);
-
-                Console.WriteLine(bddata);
-                gtestValue[num] = bddata;
-                dutFullBdAddress = bddata;
-                findDupeData(bddata);
-                return true;
-
-                /* bd sequence don't care */
-                /*
-                string bddata1 = bddata.Substring(0, 2);
-                string bddata2 = bddata.Substring(2, 2);
-                string bddata3 = bddata.Substring(4, 2);
-                string bddata4 = bddata.Substring(6, 2);
-                string bddata5 = bddata.Substring(8, 2);
-                string bddata6 = bddata.Substring(10, 2);
-
-                string resultbd = bddata6 + bddata5 + bddata4 + bddata3 + bddata2 + bddata1;
-
-                backWork.tempNap = bddata6 + bddata5;
-                backWork.tempUap = bddata4;
-                backWork.tempLap = bddata3 + bddata2 + bddata1;
-
-                Console.WriteLine(resultbd);
-                gtestValue[num] = resultbd;
-                dutFullBdAddress = resultbd;
-                
-
-                findDupeData(resultbd);
-                return true;
-                */
-
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = resultbd + " success!"; }));
-                
-                /*int index = msg.IndexOf("success");
-                Console.WriteLine(msg.Substring(index, 7));
-                tbResult.Text = msg.Substring(index, 7);*/
-            }
-            else if (msg.Contains("setprop -f"))
-            {
-                //int index = msg.IndexOf("setprop");
-                Console.WriteLine("success");
-                gtestValue[num] ="success";                
-                return true;
-            }            
-            else if (msg.Contains("BootLoader"))
-            {
-                Delay(3500);
-                int index = msg.IndexOf("FinishBootup()");
-                Console.WriteLine(msg.Substring(index, 12));
-                gtestValue[num] = msg.Substring(index, 12);
-                return true;
-
-            }
-            else if (msg.Contains("fd ble_binprop set own_identity_address_type"))
-            {                
-                int index = msg.IndexOf("success");
-                Console.WriteLine(msg.Substring(index, 7));
-                gtestValue[num] = msg.Substring(index, 7);                
-                return true;
-            }
-            else if(msg.Contains("fd ble_binprop set own_identity_address"))
-            {                
-                int index = msg.IndexOf("0x");
-
-                string bddata = msg.Substring(index + 2, 12);
-
-                if (bddata == generatebdstr)
+                if (msg.Contains("get own_identity_address"))
                 {
+                    int index = msg.IndexOf("0x");
+                    //Console.WriteLine(msg.Substring(index + 2, 12));
+
+                    string bddata = msg.Substring(index + 2, 12);
+
+                    Console.WriteLine(bddata);
                     gtestValue[num] = bddata;
+                    dutFullBdAddress = bddata;
+                    findDupeData(bddata);
                     return true;
-                }
-                else
-                    return false;
-            }
-            else if (msg.Contains("lr_set_identity_address_type"))
-            {
-                int index = msg.IndexOf("success");
-                Console.WriteLine(msg.Substring(index, 7));
-                gtestValue[num] = msg.Substring(index, 7);
-                return true;
-            }
-            else if(msg.Contains("lr_set_identity_address"))
-            {
-                int index = msg.IndexOf("0x");
 
-                string dumibddata = msg.Substring(index + 2, 12);
-                if (dumibddata == generatedumibdstr)
+                    /* bd sequence don't care */
+                    /*
+                    string bddata1 = bddata.Substring(0, 2);
+                    string bddata2 = bddata.Substring(2, 2);
+                    string bddata3 = bddata.Substring(4, 2);
+                    string bddata4 = bddata.Substring(6, 2);
+                    string bddata5 = bddata.Substring(8, 2);
+                    string bddata6 = bddata.Substring(10, 2);
+
+                    string resultbd = bddata6 + bddata5 + bddata4 + bddata3 + bddata2 + bddata1;
+
+                    backWork.tempNap = bddata6 + bddata5;
+                    backWork.tempUap = bddata4;
+                    backWork.tempLap = bddata3 + bddata2 + bddata1;
+
+                    Console.WriteLine(resultbd);
+                    gtestValue[num] = resultbd;
+                    dutFullBdAddress = resultbd;
+
+
+                    findDupeData(resultbd);
+                    return true;
+                    */
+
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = resultbd + " success!"; }));
+
+                    /*int index = msg.IndexOf("success");
+                    Console.WriteLine(msg.Substring(index, 7));
+                    tbResult.Text = msg.Substring(index, 7);*/
+                }
+                else if (msg.Contains("setprop -f"))
                 {
-                    gtestValue[num] = dumibddata;
+                    //int index = msg.IndexOf("setprop");
+                    Console.WriteLine("success");
+                    gtestValue[num] = "success";
                     return true;
                 }
-                else
-                    return false;
-            }            
-            else if (msg.Contains("Temperature"))
-            {
-                int index = msg.IndexOf("Temperature");
-                Console.WriteLine(msg.Substring(index + 14, 5));
-                gtestValue[num] = msg.Substring(index + 14, 5);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 15) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains("RebootState"))
-            {
-                int index = msg.IndexOf("RebootState");
-                Console.WriteLine(msg.Substring(index, 11));
-                gtestValue[num] = msg.Substring(index, 11);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 11) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains("CHANGE_FD_MODE"))
-            {
-                int index = msg.IndexOf("CHANGE_FD_MODE");
-                Console.WriteLine(msg.Substring(index, 14));
-                gtestValue[num] = msg.Substring(index, 14);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 14) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains(" L:OK"))
-            {
-                int index = msg.IndexOf(" L:OK");
-                Console.WriteLine(msg.Substring(index, 5));
-                gtestValue[num] = msg.Substring(index, 5);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 5) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains(" R:OK"))
-            {
-                int index = msg.IndexOf(" R:OK");
-                Console.WriteLine(msg.Substring(index, 5));
-                gtestValue[num] = msg.Substring(index, 5);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 5) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains("enter FD mode"))
-            {
-                int index = msg.IndexOf("enter FD mode");
-                Console.WriteLine(msg.Substring(index, 13));
-                gtestValue[num] = msg.Substring(index, 13);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 13) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains("fd hello"))
-            {
-                int index = msg.IndexOf("fd hello");
-
-                Console.WriteLine(msg.Substring(index, 8));
-                gtestValue[num] = msg.Substring(index, 8);
-                //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 8) + " success!"; }));
-                return true;
-            }
-            else if (msg.Contains("success"))
-            {
-                if (msg.Contains("log write"))
+                else if (msg.Contains("BootLoader"))
                 {
-                    int index = msg.IndexOf("write");
-
-                    Console.WriteLine(msg.Substring(index + 6, 4));
-                    gtestValue[num] = msg.Substring(index + 6, 2);
+                    Delay(3500);
+                    int index = msg.IndexOf("FinishBootup()");
+                    Console.WriteLine(msg.Substring(index, 12));
+                    gtestValue[num] = msg.Substring(index, 12);
                     return true;
+
                 }
-                else
+                else if (msg.Contains("fd ble_binprop set own_identity_address_type"))
                 {
                     int index = msg.IndexOf("success");
                     Console.WriteLine(msg.Substring(index, 7));
                     gtestValue[num] = msg.Substring(index, 7);
-                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 7) + " success!"; }));
                     return true;
-                }     
+                }
+                else if (msg.Contains("fd ble_binprop set own_identity_address"))
+                {
+                    int index = msg.IndexOf("0x");
+
+                    string bddata = msg.Substring(index + 2, 12);
+                    if (bddata == generatebdstr)
+                    {
+                        gtestValue[num] = bddata;
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                else if (msg.Contains("lr_set_identity_address_type"))
+                {
+                    int index = msg.IndexOf("success");
+                    Console.WriteLine(msg.Substring(index, 7));
+                    gtestValue[num] = msg.Substring(index, 7);
+                    return true;
+                }
+                else if (msg.Contains("lr_set_identity_address"))
+                {
+                    int index = msg.IndexOf("0x");
+
+                    string dumibddata = msg.Substring(index + 2, 12);
+                    if (dumibddata == generatedumibdstr)
+                    {
+                        gtestValue[num] = dumibddata;
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                else if (msg.Contains("Temperature"))
+                {
+                    int index = msg.IndexOf("Temperature");
+                    Console.WriteLine(msg.Substring(index + 14, 5));
+                    gtestValue[num] = msg.Substring(index + 14, 5);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 15) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains("RebootState"))
+                {
+                    int index = msg.IndexOf("RebootState");
+                    Console.WriteLine(msg.Substring(index, 11));
+                    gtestValue[num] = msg.Substring(index, 11);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 11) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains("CHANGE_FD_MODE"))
+                {
+                    int index = msg.IndexOf("CHANGE_FD_MODE");
+                    Console.WriteLine(msg.Substring(index, 14));
+                    gtestValue[num] = msg.Substring(index, 14);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 14) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains(" L:OK"))
+                {
+                    int index = msg.IndexOf(" L:OK");
+                    Console.WriteLine(msg.Substring(index, 5));
+                    gtestValue[num] = msg.Substring(index, 5);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 5) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains(" R:OK"))
+                {
+                    int index = msg.IndexOf(" R:OK");
+                    Console.WriteLine(msg.Substring(index, 5));
+                    gtestValue[num] = msg.Substring(index, 5);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 5) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains("enter FD mode"))
+                {
+                    int index = msg.IndexOf("enter FD mode");
+                    Console.WriteLine(msg.Substring(index, 13));
+                    gtestValue[num] = msg.Substring(index, 13);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 13) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains("fd hello"))
+                {
+                    int index = msg.IndexOf("fd hello");
+
+                    Console.WriteLine(msg.Substring(index, 8));
+                    gtestValue[num] = msg.Substring(index, 8);
+                    //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 8) + " success!"; }));
+                    return true;
+                }
+                else if (msg.Contains("success"))
+                {
+                    if (msg.Contains("log write"))
+                    {
+                        int index = msg.IndexOf("write");
+
+                        Console.WriteLine(msg.Substring(index + 6, 4));
+                        gtestValue[num] = msg.Substring(index + 6, 2);
+                        return true;
+                    }
+                    else
+                    {
+                        int index = msg.IndexOf("success");
+                        Console.WriteLine(msg.Substring(index, 7));
+                        gtestValue[num] = msg.Substring(index, 7);
+                        //tbResult.Invoke(new MethodInvoker(delegate { tbResult.Text = msg.Substring(index, 7) + " success!"; }));
+                        return true;
+                    }
+                }
+                else
+                {
+                    gtestValue[num] = "-";
+                    return false;
+                }
             }
-            else
-            {
-                gtestValue[num] = "-";
-                return false;
-            }
+
         }
 
         public bool Check_Data_Yusen(int num)
