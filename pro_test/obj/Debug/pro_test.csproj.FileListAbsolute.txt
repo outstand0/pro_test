@@ -48,3 +48,6 @@ D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csproj
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.exe
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.pdb
 D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csprojResolveAssemblyReference.cache
+D:\model\Tool_Source_fac\SONY\pro_test_230210_BDA\pro_test\bin\Debug\pro_test.exe.config
+D:\model\Tool_Source_fac\SONY\pro_test_230210_BDA\pro_test\obj\Debug\pro_test.exe
+D:\model\Tool_Source_fac\SONY\pro_test_230210_BDA\pro_test\obj\Debug\pro_test.pdb

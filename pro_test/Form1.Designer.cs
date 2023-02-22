@@ -118,7 +118,7 @@
             this.tbResult.Multiline = true;
             this.tbResult.Name = "tbResult";
             this.tbResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbResult.Size = new System.Drawing.Size(240, 263);
+            this.tbResult.Size = new System.Drawing.Size(240, 465);
             this.tbResult.TabIndex = 4;
             // 
             // btnGreen
@@ -182,14 +182,14 @@
             this.dataGridView1.Location = new System.Drawing.Point(23, 44);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(1049, 337);
+            this.dataGridView1.Size = new System.Drawing.Size(1049, 542);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.TabStop = false;
             // 
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(23, 430);
+            this.dataGridView2.Location = new System.Drawing.Point(23, 632);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowTemplate.Height = 23;
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -199,7 +199,7 @@
             // tb_failCount
             // 
             this.tb_failCount.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_failCount.Location = new System.Drawing.Point(909, 391);
+            this.tb_failCount.Location = new System.Drawing.Point(909, 593);
             this.tb_failCount.Name = "tb_failCount";
             this.tb_failCount.ReadOnly = true;
             this.tb_failCount.Size = new System.Drawing.Size(159, 35);
@@ -210,7 +210,7 @@
             // tb_passCount
             // 
             this.tb_passCount.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_passCount.Location = new System.Drawing.Point(533, 390);
+            this.tb_passCount.Location = new System.Drawing.Point(533, 592);
             this.tb_passCount.Name = "tb_passCount";
             this.tb_passCount.ReadOnly = true;
             this.tb_passCount.Size = new System.Drawing.Size(156, 35);
@@ -221,7 +221,7 @@
             // tb_totalCount
             // 
             this.tb_totalCount.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_totalCount.Location = new System.Drawing.Point(129, 390);
+            this.tb_totalCount.Location = new System.Drawing.Point(129, 592);
             this.tb_totalCount.Name = "tb_totalCount";
             this.tb_totalCount.ReadOnly = true;
             this.tb_totalCount.Size = new System.Drawing.Size(167, 35);
@@ -233,7 +233,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label4.Location = new System.Drawing.Point(840, 397);
+            this.label4.Location = new System.Drawing.Point(840, 599);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 24);
             this.label4.TabIndex = 12;
@@ -243,7 +243,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label3.Location = new System.Drawing.Point(449, 397);
+            this.label3.Location = new System.Drawing.Point(449, 599);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 24);
             this.label3.TabIndex = 13;
@@ -253,7 +253,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(32, 394);
+            this.label2.Location = new System.Drawing.Point(32, 596);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 24);
             this.label2.TabIndex = 14;
@@ -263,7 +263,7 @@
             // 
             this.lbResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbResult.Font = new System.Drawing.Font("굴림", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbResult.Location = new System.Drawing.Point(638, 430);
+            this.lbResult.Location = new System.Drawing.Point(638, 632);
             this.lbResult.Name = "lbResult";
             this.lbResult.Size = new System.Drawing.Size(250, 190);
             this.lbResult.TabIndex = 18;
@@ -274,7 +274,7 @@
             this.lbRegion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.lbRegion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbRegion.Font = new System.Drawing.Font("굴림", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbRegion.Location = new System.Drawing.Point(899, 430);
+            this.lbRegion.Location = new System.Drawing.Point(899, 632);
             this.lbRegion.Name = "lbRegion";
             this.lbRegion.Size = new System.Drawing.Size(173, 190);
             this.lbRegion.TabIndex = 19;
@@ -283,7 +283,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("굴림", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnStart.Location = new System.Drawing.Point(21, 626);
+            this.btnStart.Location = new System.Drawing.Point(21, 828);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(1051, 78);
             this.btnStart.TabIndex = 0;
@@ -501,7 +501,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1339, 736);
+            this.ClientSize = new System.Drawing.Size(1339, 931);
             this.Controls.Add(this.btngenguid);
             this.Controls.Add(this.cbComport);
             this.Controls.Add(this.btnSend2);

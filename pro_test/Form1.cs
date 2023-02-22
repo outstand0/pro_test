@@ -52,6 +52,7 @@ namespace pro_test
 
         static public string gAppName;
         static public string gCheckOnly;
+        static public string gFactoryFlag;
 
         static public string gSoundNg1 = System.IO.Directory.GetCurrentDirectory() + "\\" + "sound\\" + "ng_merge.wav";
 
@@ -368,13 +369,14 @@ namespace pro_test
                 public string capid_write_updown = "fd pm xosctrim 612850";
                 public string rfanalog_nvwrite = "fd rfanalog 612850";
                 public string appmode_init = "fd prop set common initapp system_server";
-                public string connection_port_set = "fd prop set unique console1 2";
-                public string connection_port_set_return = "fd prop set unique console 1";
+                public string connect_port_enable = "fd prop set unique console1 2";
+                public string connect_port_disable = "fd prop set unique console 1";
                 public string dtm_mode_on = "fd ble_dtm start";
 
                 public string hdu_exit = "exit hdu";
                 public string setting_save_reboot = "fd app appstate RebootState";
                 public string factory_flag_clear = "fd app tracelog clear";
+                public string factory_flag = "fd app tracelog write " + gFactoryFlag + " 1";
                 public string factory_flag_1 = "fd app tracelog write 1 1";
                 public string factory_flag_2 = "fd app tracelog write 2 1";
                 public string factory_flag_3 = "fd app tracelog write 3 1";
@@ -525,6 +527,10 @@ namespace pro_test
                 else if (seqName == "APPMODE_INIT") { retVal = procTestAppmodeInit(index); }
                 else if (seqName == "SET_PROP") { retVal = procTestSetProp(index); }
                 else if (seqName == "REBOOT") { retVal = procTestReboot(index); }
+
+                else if (seqName == "CONNECT_PORT_ENABLE") { retVal = procTestConnectPortEnable(index); }
+                else if (seqName == "CONNECT_PORT_DISABLE") { retVal = procTestConnectPortDisable(index); }
+                else if (seqName == "DTM_MODE_ON") { retVal = procTestDTMModeOn(index); }
                 
                 else if (seqName == "TEST_CONNECT_YUSEN") { retVal = procTestOpenYusen(index); }
                 else if (seqName == "MAIN_FD_L") { retVal = procTestMainFDL(index); }
@@ -794,9 +800,15 @@ namespace pro_test
             public bool procTestFactoryFlagWrite(int index)
             {
                 int flag_ng = 0;
+                if (mainForm.port_check() == false)
+                {
+                    flag_ng = 0;
+                }
+                else
+                    flag_ng = 1;
                 try
                 {
-                    mainForm.SendMessage(command_data.factory_flag_1);
+                    mainForm.SendMessage(command_data.factory_flag);
                 }
                 finally
                 {
@@ -807,7 +819,7 @@ namespace pro_test
                 }
                 if (flag_ng == 1)
                 {
-                    mainForm.gNgType[index] = "Factory Flag 1 1 Fail";
+                    mainForm.gNgType[index] = "Factory Flag " + gFactoryFlag + " 1 Fail";
                     return false;
                 }
                 else
@@ -815,7 +827,15 @@ namespace pro_test
             }
             public bool procTestSettingSave(int index)
             {
-                int flag_ng = 0;                
+                int flag_ng = 0;
+
+                if (mainForm.port_check() == false)
+                {
+                    flag_ng = 0;
+                }
+                else
+                    flag_ng = 1;
+
                 try
                 {
                     mainForm.SendMessage(command_data.setting_save_reboot);
@@ -834,6 +854,13 @@ namespace pro_test
                             Console.WriteLine(mainForm.msg.Substring(index, 7));
                             break;
                         }
+                        else if(mainForm.msg.Contains("NuttShell "))
+                        {
+                            int index1 = mainForm.msg.IndexOf("NuttShell ");
+                            Console.WriteLine("Setting Save Success");
+                            break;
+                        }
+                        
                     }
                 }
                 if (flag_ng == 1)
@@ -1016,10 +1043,7 @@ namespace pro_test
                 }
                 finally
                 {
-                    if (mainForm.Check_Data(index) == false)
-                    {
-                        flag_ng = 1;
-                    }
+                    
                 }
                 if (flag_ng == 1)
                 {
@@ -1032,7 +1056,6 @@ namespace pro_test
             public bool procTestReboot(int index)
             {
                 int flag_ng = 0;
-
                 try
                 {
                     mainForm.SendMessage(command_data.reboot);
@@ -1043,10 +1066,89 @@ namespace pro_test
                     {
                         flag_ng = 1;
                     }
+                    while (true)
+                    {
+                        if (mainForm.msg.Contains("FinishBootup()"))
+                        {
+                            int index1 = mainForm.msg.IndexOf("FinishBootup()");
+                            Console.WriteLine(mainForm.msg.Substring(index, 7));
+                            break;
+                        }
+                    }
                 }
                 if (flag_ng == 1)
                 {
                     mainForm.gNgType[index] = "Reboot Fail";
+                    return false;
+                }
+                else
+                    return true;
+            }
+            public bool procTestConnectPortEnable(int index)
+            {
+                int flag_ng = 0;
+                try
+                {
+                    mainForm.SendMessage(command_data.connect_port_enable);
+                }
+                finally
+                {
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+                 
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Connect Port Enable Fail";
+                    return false;
+                }
+                else
+                    return true;
+            }
+            public bool procTestConnectPortDisable(int index)
+            {
+                int flag_ng = 0;
+                try
+                {
+                    mainForm.SendMessage(command_data.connect_port_disable);
+                }
+                finally
+                {
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "Connect Port Disable Fail";
+                    return false;
+                }
+                else
+                    return true;
+            }
+            public bool procTestDTMModeOn(int index)
+            {
+                int flag_ng = 0;
+                try
+                {
+                    mainForm.SendMessage(command_data.dtm_mode_on);
+                }
+                finally
+                {
+                    Thread.Sleep(300);
+                    if (mainForm.Check_Data(index) == false)
+                    {
+                        flag_ng = 1;
+                    }
+
+                }
+                if (flag_ng == 1)
+                {
+                    mainForm.gNgType[index] = "DTM Mode On Fail";
                     return false;
                 }
                 else
@@ -1854,7 +1956,7 @@ namespace pro_test
                     {
                         string ttt = dataGridView2.Rows[row].Cells[1].Value.ToString();
                         if (bd == dataGridView2.Rows[row].Cells[1].Value.ToString())
-                        {
+                        {                            
                             // focus?
                             dataGridView2.FirstDisplayedScrollingRowIndex = dataGridView2.Rows[row].Index;
 
@@ -2108,6 +2210,10 @@ namespace pro_test
 
             tempString = IniReader.IniReadValue("CONFIG", "APPNAME", pathConfigFile);
             gAppName = tempString;
+
+            tempString = IniReader.IniReadValue("CONFIG", "FACTORY_FLAG", pathConfigFile);
+            gFactoryFlag = tempString;
+
             lb_AppName.Text = program_name + " " + gAppName;
             lb_AppName.BackColor = Color.LightYellow;
             lb_AppName.ForeColor = Color.Green;
@@ -2361,6 +2467,15 @@ namespace pro_test
                 return _Port;
             }
         }
+        public bool port_check()
+        {
+            if (_Port.IsOpen == false)
+            {
+                return false;
+            }
+            else
+                return true;
+        }
         private void port_open()
         {
             //serialPort1 = new SerialPort();
@@ -2545,6 +2660,22 @@ namespace pro_test
                 Console.WriteLine(msg.Substring(index, 7));
                 tbResult.Text = msg.Substring(index, 7);*/
             }
+            else if (msg.Contains("setprop -f"))
+            {
+                //int index = msg.IndexOf("setprop");
+                Console.WriteLine("success");
+                gtestValue[num] ="success";                
+                return true;
+            }            
+            else if (msg.Contains("BootLoader"))
+            {
+                Delay(3500);
+                int index = msg.IndexOf("FinishBootup()");
+                Console.WriteLine(msg.Substring(index, 12));
+                gtestValue[num] = msg.Substring(index, 12);
+                return true;
+
+            }
             else if (msg.Contains("fd ble_binprop set own_identity_address_type"))
             {                
                 int index = msg.IndexOf("success");
@@ -2650,7 +2781,7 @@ namespace pro_test
                     int index = msg.IndexOf("write");
 
                     Console.WriteLine(msg.Substring(index + 6, 4));
-                    gtestValue[num] = msg.Substring(index + 6, 4);
+                    gtestValue[num] = msg.Substring(index + 6, 2);
                     return true;
                 }
                 else
@@ -2667,15 +2798,11 @@ namespace pro_test
                 gtestValue[num] = "-";
                 return false;
             }
-            return false;
-
-
         }
 
         public bool Check_Data_Yusen(int num)
         {
             Delay(500);
-
 
             return false;
         }

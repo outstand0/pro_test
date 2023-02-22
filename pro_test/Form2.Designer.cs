@@ -34,12 +34,12 @@
             // 
             // cbbTestSelect
             // 
-            this.cbbTestSelect.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbbTestSelect.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbbTestSelect.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cbbTestSelect.FormattingEnabled = true;
             this.cbbTestSelect.Location = new System.Drawing.Point(54, 74);
             this.cbbTestSelect.Name = "cbbTestSelect";
-            this.cbbTestSelect.Size = new System.Drawing.Size(181, 24);
+            this.cbbTestSelect.Size = new System.Drawing.Size(181, 35);
             this.cbbTestSelect.TabIndex = 23;
             this.cbbTestSelect.SelectedIndexChanged += new System.EventHandler(this.cbbTestSelect_SelectedIndexChanged);
             // 
@@ -57,7 +57,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 136);
+            this.ClientSize = new System.Drawing.Size(284, 140);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbbTestSelect);
             this.Name = "Form2";

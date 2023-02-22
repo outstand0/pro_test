@@ -23,26 +23,26 @@ namespace pro_test
         private void Form2_Load(object sender, EventArgs e)
         {
             Combobox_Data_Add();
-            cbbTestSelect.Text = "BDA";             
+            //cbbTestSelect.Text = "BDA";             
         }
         private void Combobox_Data_Add()
         {            
-            cbbTestSelect.Items.Add("BD_CHECKER");
+            //cbbTestSelect.Items.Add("BD_CHECKER");
             cbbTestSelect.Items.Add("BDA");
-            cbbTestSelect.Items.Add("Charging");
-            cbbTestSelect.Items.Add("Crystal");
-            cbbTestSelect.Items.Add("Dongle_Pairing");
-            cbbTestSelect.Items.Add("FR_Confirmation");
-            cbbTestSelect.Items.Add("GAGE_IC");
-            cbbTestSelect.Items.Add("Howling");
-            cbbTestSelect.Items.Add("IR");
-            cbbTestSelect.Items.Add("LR_PAIRING");
-            cbbTestSelect.Items.Add("Loopback");
+            //cbbTestSelect.Items.Add("Charging");
+            cbbTestSelect.Items.Add("CRYSTAL");
+            //cbbTestSelect.Items.Add("Dongle_Pairing");
+            //cbbTestSelect.Items.Add("FR_Confirmation");
+            //cbbTestSelect.Items.Add("GAGE_IC");
+            //cbbTestSelect.Items.Add("Howling");
+            //cbbTestSelect.Items.Add("IR");
+            //cbbTestSelect.Items.Add("LR_PAIRING");
+            //cbbTestSelect.Items.Add("Loopback");
             cbbTestSelect.Items.Add("RF");
-            cbbTestSelect.Items.Add("Seal");
-            cbbTestSelect.Items.Add("Thermistor");
-            cbbTestSelect.Items.Add("Touch");
-            cbbTestSelect.Items.Add("Uplink");
+            //cbbTestSelect.Items.Add("Seal");
+            //cbbTestSelect.Items.Add("Thermistor");
+            //cbbTestSelect.Items.Add("Touch");
+            //cbbTestSelect.Items.Add("Uplink");
         }
 
         public void cbbTestSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,6 +64,14 @@ namespace pro_test
                 else if (cbbTestSelect.Text == "GAGE_IC")
                 {
                     MessageBox.Show("GAGE IC Program Execute!!");
+                }
+                else if(cbbTestSelect.Text == "CRYSTAL")
+                {
+                    MessageBox.Show("CRYSTAL Program Execute!!");
+                }
+                else if(cbbTestSelect.Text == "RF")
+                {
+                    MessageBox.Show("RF Program Execute!!");
                 }
             }
             finally
