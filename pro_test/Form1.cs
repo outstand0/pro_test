@@ -23,6 +23,8 @@ namespace pro_test
 {
     public partial class Form1 : Form
     {
+        public MessageBasedSession mbSession = null;
+        
 
         static public string gDutName;
         static public string gSwVersion;
@@ -344,6 +346,17 @@ namespace pro_test
         }
 #endregion
 
+        private bool checkGPIBConnect()
+        {
+            {
+                int flag_ng = 0;
+
+                using (var rmSession = new ResourceManager())
+                {
+
+                }
+            }
+        }
 
         public class backWork
         {
