@@ -56,6 +56,7 @@ namespace pro_test
 
         public string comPort;
         public string comPort_num;
+        static public string gGpibAddress;
 
         static public string gAppName;
         static public string gCheckOnly;
@@ -86,6 +87,8 @@ namespace pro_test
         public string program_name;
 
         public String msg;
+
+        public string readString = "";
 
         public Form1()
         {
@@ -353,10 +356,125 @@ namespace pro_test
 
                 using (var rmSession = new ResourceManager())
                 {
+                    string gpibcon = "GPIB0::" + gGpibAddress + "::INSTR";
 
+                    try
+                    {
+                        mbSession = (MessageBasedSession)rmSession.Open(gpibcon);
+                    }
+                    catch(InvalidCastException)
+                    {
+                        flag_ng = 1;
+                        MessageBox.Show("Resource selected must be a mseeage-based session");
+                    }
+                    catch
+                    {
+                        flag_ng = 1;
+                    }
+                    finally
+                    {
+
+                    }
+
+                    if (flag_ng != 1)
+                    {
+                        readString = "";
+                        gpib_query("*IDN?");
+                        if (readString == "")
+                        {
+                            flag_ng = 1;
+                        }
+                    }
+                    if (flag_ng == 1)
+                    {
+                        MessageBox.Show("Battery simulator was not found - NG");
+                        return false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Battery simulator was found - OK");
+                        return true;
+                    }
                 }
             }
         }
+        private bool gpib_query(string arg)
+        {
+            int flag_ng = 0;
+            //string readValue = "";
+
+            try
+            {
+                mbSession.RawIO.Write(arg);
+                readString = InsertCommonEscapeSequences(mbSession.RawIO.ReadString());
+            }
+            catch (Exception exp)
+            {
+                flag_ng = 1;
+                MessageBox.Show(exp.Message);
+            }
+            finally
+            {
+                //Cursor.Current = Cursors.Default;
+            }
+
+            if (flag_ng == 1)
+            {
+                return false;
+            }
+            else
+            {
+                //MessageBox.Show(readString);
+                return true;
+            }
+        }
+
+        private bool gpib_write(string arg)
+        {
+            int flag_ng = 0;
+
+            try
+            {
+                mbSession.RawIO.Write(arg);
+            }
+            catch (Exception exp)
+            {
+                flag_ng = 1;
+                MessageBox.Show(exp.Message);
+            }
+
+            if (flag_ng == 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private string InsertCommonEscapeSequences(string s)
+        {
+            return s.Replace("\n", "\\n").Replace("\r", "\\r");
+        }
+
+        private string ReplaceCommonEscapeSequences(string s)
+        {
+            return s.Replace("\\n", "\n").Replace("\\r", "\r");
+        }
+
+        #region gpib_control_function
+
+
+
+
+
+
+
+
+
+
+
+        #endregion
 
         public class backWork
         {
@@ -2224,6 +2342,9 @@ namespace pro_test
             tempString = IniReader.IniReadValue("CONFIG", "FACTORY_FLAG", pathConfigFile);
             gFactoryFlag = tempString;
 
+            tempString = IniReader.IniReadValue("CONFIG", "GPIB_ADDRESS", pathConfigFile);
+            gGpibAddress = tempString;
+
             this.Text = program_name + " " + gAppName;
             lb_AppName.Text = program_name + " " + gAppName;
             lb_AppName.BackColor = Color.LightYellow;
@@ -2967,6 +3088,28 @@ namespace pro_test
 
             tbResult.Text += result;
             MessageBox.Show(result);
+        }
+
+        private void btnGpibSend_Click(object sender, EventArgs e)
+        {
+            gpib_write(tbGpibData.Text);
+            Strings = String.Format("[send] {0}", tbGpibData);
+
+            gpib_query("READ?");
+
+            readString = readString.Replace("\\n", string.Empty);
+            Strings = String.Format("[receive] {0}", readString);
+        }
+
+        private void btnGpibConnect_Click(object sender, EventArgs e)
+        {
+            if (checkGPIBConnect())
+            {
+                gpib_write("*rst");
+                Thread.Sleep(200);
+            }
+            else
+                Close();
         }
     }
 }

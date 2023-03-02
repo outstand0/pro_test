@@ -51,3 +51,7 @@ D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csproj
 D:\model\Tool_Source_fac\SONY\pro_test_230210_BDA\pro_test\bin\Debug\pro_test.exe.config
 D:\model\Tool_Source_fac\SONY\pro_test_230210_BDA\pro_test\obj\Debug\pro_test.exe
 D:\model\Tool_Source_fac\SONY\pro_test_230210_BDA\pro_test\obj\Debug\pro_test.pdb
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\Interop.CW3DGraphLib.dll
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\Interop.MXCTRLLib.dll
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\Interop.nisysapi.dll
+D:\model\Tool_Source_fac\SONY\pro_test_230210\pro_test\obj\Debug\pro_test.csproj.ResolveComReference.cache

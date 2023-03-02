@@ -73,6 +73,12 @@
             this.btnSend2 = new System.Windows.Forms.Button();
             this.cbComport = new System.Windows.Forms.ComboBox();
             this.btngenguid = new System.Windows.Forms.Button();
+            this.btnGpibSend = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbGpibData = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.btnGpibConnect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -114,11 +120,11 @@
             // 
             // tbResult
             // 
-            this.tbResult.Location = new System.Drawing.Point(1087, 441);
+            this.tbResult.Location = new System.Drawing.Point(1087, 549);
             this.tbResult.Multiline = true;
             this.tbResult.Name = "tbResult";
             this.tbResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbResult.Size = new System.Drawing.Size(240, 465);
+            this.tbResult.Size = new System.Drawing.Size(240, 357);
             this.tbResult.TabIndex = 4;
             // 
             // btnGreen
@@ -497,11 +503,71 @@
             this.btngenguid.UseVisualStyleBackColor = true;
             this.btngenguid.Click += new System.EventHandler(this.btngenguid_Click);
             // 
+            // btnGpibSend
+            // 
+            this.btnGpibSend.Location = new System.Drawing.Point(1087, 486);
+            this.btnGpibSend.Name = "btnGpibSend";
+            this.btnGpibSend.Size = new System.Drawing.Size(75, 23);
+            this.btnGpibSend.TabIndex = 42;
+            this.btnGpibSend.Text = "send";
+            this.btnGpibSend.UseVisualStyleBackColor = true;
+            this.btnGpibSend.Click += new System.EventHandler(this.btnGpibSend_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(1085, 435);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 12);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "GPIB TEST";
+            // 
+            // tbGpibData
+            // 
+            this.tbGpibData.Location = new System.Drawing.Point(1087, 515);
+            this.tbGpibData.Name = "tbGpibData";
+            this.tbGpibData.Size = new System.Drawing.Size(240, 21);
+            this.tbGpibData.TabIndex = 44;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1168, 456);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 47;
+            this.button3.Text = "query";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1255, 456);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 46;
+            this.button4.Text = "write";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // btnGpibConnect
+            // 
+            this.btnGpibConnect.Location = new System.Drawing.Point(1087, 456);
+            this.btnGpibConnect.Name = "btnGpibConnect";
+            this.btnGpibConnect.Size = new System.Drawing.Size(75, 23);
+            this.btnGpibConnect.TabIndex = 45;
+            this.btnGpibConnect.Text = "connect";
+            this.btnGpibConnect.UseVisualStyleBackColor = true;
+            this.btnGpibConnect.Click += new System.EventHandler(this.btnGpibConnect_Click);
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1339, 931);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnGpibConnect);
+            this.Controls.Add(this.tbGpibData);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.btnGpibSend);
             this.Controls.Add(this.btngenguid);
             this.Controls.Add(this.cbComport);
             this.Controls.Add(this.btnSend2);
@@ -600,6 +666,12 @@
         private System.Windows.Forms.Button btnSend2;
         private System.Windows.Forms.ComboBox cbComport;
         private System.Windows.Forms.Button btngenguid;
+        private System.Windows.Forms.Button btnGpibSend;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tbGpibData;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnGpibConnect;
     }
 }
 
